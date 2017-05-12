@@ -1,0 +1,11 @@
+# Example of rules for XClientForward plugin
+
+loadplugin Mail::SpamAssassin::Plugin::Check
+loadplugin Mail::SpamAssassin::Plugin::XClientForward
+
+
+full SPAMEXPERTS_CHECK	eval:check_spamfilter("recipient@example.com", "server1.test18.simplyspamfree.com", "25")
+swaks_options --tls
+
+
+report This message score was _SCORE_.
