@@ -253,7 +253,7 @@ sub spamfilter_lookup {
     $permsgstatus->enter_helper_run_mode();
 
     # Load the default options
-    my @opts = split(' ', "-n -t $recipient -s $server:$port --body $tmpf");
+    my @opts = split(' ', untaint_var("-n -t $recipient -s $server:$port --body $tmpf"));
 
     # Load the options form config
     my $config_opts = untaint_var($self->{main}->{conf}->{swaks_options});
@@ -261,21 +261,21 @@ sub spamfilter_lookup {
         push(@opts, split(' ', $config_opts));
     }
     if ($permsgstatus->{xclient_info}){
-        my $xclient_opt = "--xclient \"name=$permsgstatus->{xclient_name}
-        ADDR=$permsgstatus->{xclient_addr}\" --ehlo $permsgstatus->{xclient_helo}";
+        my $xclient_opt = untaint_var("--xclient \"name=$permsgstatus->{xclient_name}
+        ADDR=$permsgstatus->{xclient_addr}\" --ehlo $permsgstatus->{xclient_helo}");
         push(@opts, split(' ', $xclient_opt));
     }
 
 
     if ($permsgstatus->{envelope_from}){
-        push(@opts, split(' ', "-f $permsgstatus->{envelope_from}"));
+        push(@opts, split(' ', untaint_var("-f $permsgstatus->{envelope_from}")));
     }
     else{
-        push(@opts, split(' ', "-f $from_header_addr"));
+        push(@opts, split(' ', untaint_var("-f $from_header_addr")));
     }
     if ($from_header){
         $from_header = "$from_header->[0]";
-        push(@opts, split(' ', "-h-From \"$from_header\""));
+        push(@opts, split(' ', untaint_var("-h-From \"$from_header\"")));
     }
 
     my $timer = Mail::SpamAssassin::Timeout->new(
