@@ -275,7 +275,7 @@ sub spamfilter_lookup {
     }
     if ($from_header){
         $from_header = "$from_header->[0]";
-        push(@opts, split(' ', untaint_var("-h-From \"$from_header\"")));
+        push(@opts, split(' ', untaint_var("-h-From \"$from_header\""), 1));
     }
 
     my $timer = Mail::SpamAssassin::Timeout->new(
