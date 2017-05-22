@@ -253,7 +253,7 @@ sub spamfilter_lookup {
     $permsgstatus->enter_helper_run_mode();
 
     # Load the default options
-    my @opts = split(' ', untaint_var("-n -t $recipient -s $server:$port --body $tmpf"));
+    my @opts = split(' ', untaint_var("-n -t $recipient -s $server:$port --data $tmpf"));
 
     # Load the options form config
     my $config_opts = untaint_var($self->{main}->{conf}->{swaks_options});
